@@ -41,8 +41,14 @@ function searchCallback(results) {
 }
 
 function displayRepos(data) {
+    var description="";
     for (var j = 0; j < data.length; j++){
-        $(".repositoryList").append("<li><a href='"+ data[j].clone_url + "'>" + data[j].name + "</a><p> Description: " + data.description + "</p></li>");
+        if (data[j].description == ""){
+            description = "No info available";
+        } else {
+            description = data[j].description;
+        }
+        $(".repositoryList").append("<li><a href='"+ data[j].clone_url + "'>" + data[j].name + "</a><p> Description: " + description + "</p></li>");
     }
 }
 
