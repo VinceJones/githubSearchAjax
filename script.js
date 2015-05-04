@@ -13,27 +13,53 @@ function search(searchUser) {
         success: function (data) {
             searchCallback(data);
         }
+
     });
 }
 
+function getRepoList() {
+    $.ajax({
+        type: 'GET',
+        dataType: 'json',
+        crossDomain: true,
+        url: user.repos_url + "?client_id=f8a4b95805c9804c9eb7&client_secret=4b1bff35a5b8b802fe4bb4e1204afd2f56fc8d8d",
+        complete: function () {
+            console.log('ajax complete');
+        },
+        success: function (data) {
+            console.log(data);
+            displayRepos(data);
+        }
+    });
+}
 
 function searchCallback(results) {
     console.log(results);
     user = results;
-    displayContent(user);
+    displayContent();
+    getRepoList();
 }
-function displayContent(userData){
-    $('.userInfo').toggleClass("hidden");
 
+function displayRepos(data) {
+    for (var j = 0; j < data.length; j++){
+        $(".repositoryList").append("<li><a href='"+ data[j].clone_url + "'>" + data[j].name + "</a><p> Description: " + data.description + "</p></li>");
+    }
+}
+
+function displayContent(){
+    $('.userInfo').toggleClass("hidden");
+    var signUpDate = user.created_at.slice(0, 10);
+    var signUpTime = user.created_at.slice(12, 19);
     $('.userPic').attr("src", user.avatar_url);
     $('.name').text(user.name);
+    $('.created').text("This user signed up on "+ signUpDate +" at "+ signUpTime);
     $('.location').text(user.location);
     $('.email').text(user.email);
-    $(".repos").html("<a href='" + user.repos_url + "'>Check out " + user.name + " repos!</a>");
+
+    $(".repos").html("<a href='" + user.html_url + "'>Check out " + user.name + " repos!</a>");
 }
 
 $(document).ready(function() {
-
 
     $(".header").on('click', ".searchGithub", function(event){
         event.preventDefault()
