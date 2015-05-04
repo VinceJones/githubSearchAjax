@@ -6,7 +6,7 @@ function search(searchUser) {
         type: 'GET',
         dataType: 'json',
         crossDomain: true,
-        url: "https://api.github.com/users/" + searchUser,
+        url: "https://api.github.com/users/" + searchUser +"?client_id=f8a4b95805c9804c9eb7&client_secret=4b1bff35a5b8b802fe4bb4e1204afd2f56fc8d8d",
         complete: function () {
             console.log('ajax complete');
         },
@@ -29,7 +29,7 @@ function displayContent(userData){
     $('.name').text(user.name);
     $('.location').text(user.location);
     $('.email').text(user.email);
-    $(".repos").text(user.repos_url);
+    $(".repos").html("<a href='" + user.repos_url + "'>Check out " + user.name + " repos!</a>");
 }
 
 $(document).ready(function() {
